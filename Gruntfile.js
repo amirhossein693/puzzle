@@ -30,6 +30,18 @@ module.exports = function(grunt) {
       }
     },
 
+    compass: {
+      build: {
+        options: {
+          sassDir: 'app/assets/scss/',
+          cssDir: 'app/assets/css/',
+          debugInfo: false,
+          outputStyle: 'expanded',
+          environment: 'production'
+        }
+      }
+    },
+
     autoprefixer: {
       options: {
         browsers: ['last 15 version']
@@ -65,7 +77,7 @@ module.exports = function(grunt) {
           expand: true,
           dot: true,
           cwd: 'app/',
-          src: ['**/*', '!**/assets/js/**', '!**/assets/css/**'],
+          src: ['**/*', '!**/assets/js/**', '!**/assets/css/**', '!**/assets/scss/**'],
           dest: 'dest/'
         }],
       },
@@ -90,11 +102,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-compass');
 
   // task(s).
   grunt.registerTask('build', [
                                 'jshint',
                                 'uglify:build',
+                                'compass:build',
                                 'autoprefixer:build',
                                 'cssmin:build',
                                 'copy:build',
