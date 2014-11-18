@@ -1,2 +1,3 @@
-dest
+dest/*
 node_modules
+.sass-cache/
