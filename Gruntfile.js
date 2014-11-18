@@ -25,7 +25,7 @@ module.exports = function(grunt) {
           cwd: 'app/assets',
           src: ['js/**/*.js'],
           dest: 'dest/assets/',
-          ext: '.min.js',
+          ext: '.js',
         }],  
       }
     },
@@ -66,7 +66,7 @@ module.exports = function(grunt) {
           cwd: 'app/assets',
           src: ['css/**/*.css'],
           dest: 'dest/assets/',
-          ext: '.min.css',
+          ext: '.css',
         }],  
       }
     },
