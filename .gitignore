@@ -1,4 +1,5 @@
 app/**/css
+app/assets/vendors
 dest/*
 node_modules
 .sass-cache/
