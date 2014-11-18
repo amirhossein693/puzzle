@@ -2,3 +2,6 @@ Project:	Image Manipulation with HTML5 Canvas: A Sliding Puzzle
 Author:		Amirhossein Ahmadi
 Contact:	amirhossein693@gmail.com
 Reference:	http://www.sitepoint.com/image-manipulation-with-html5-canvas-a-sliding-puzzle-2/
+
+After clone project, please install grunt modules And run 'build' task.
+Enjoy it.
