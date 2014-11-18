@@ -69,7 +69,17 @@ module.exports = function(grunt) {
           dest: 'dest/'
         }],
       },
-    },    
+    },
+
+    watch: {
+      build: {
+        files: ['**/*'],
+        tasks: ['build'],
+        options: {
+          spawn: false,
+        },
+      },
+    },
 
   });
 
@@ -79,6 +89,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-autoprefixer');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   // task(s).
   grunt.registerTask('build', [
@@ -86,7 +97,8 @@ module.exports = function(grunt) {
                                 'uglify:build',
                                 'autoprefixer:build',
                                 'cssmin:build',
-                                'copy:build'
+                                'copy:build',
+                                'watch:build'
                               ]);
 
   grunt.registerTask('serve', ['jshint']);  
