@@ -4,9 +4,6 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     uglify: {
-      options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-      },
       build: {
         files: [{
           expand: true,
@@ -17,6 +14,19 @@ module.exports = function(grunt) {
         }],  
       }
     },
+
+    cssmin: {
+      build: {
+        files: [{
+          expand: true,
+          cwd: 'app/assets',
+          src: ['css/**/*.css'],
+          dest: 'dest/assets/',
+          ext: '.min.css',
+        }],  
+      }
+    },
+
     jshint: {
       // define the files to lint
       files: ['gruntfile.js', 'app/assets/js/*.js'],
@@ -36,9 +46,10 @@ module.exports = function(grunt) {
   // module(s)
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
 
   // task(s).
-  grunt.registerTask('build', [ 'jshint', 'uglify']);
+  grunt.registerTask('build', [ 'jshint', 'uglify:build', 'cssmin:build']);
   grunt.registerTask('serve', ['jshint']);  
 
 };
