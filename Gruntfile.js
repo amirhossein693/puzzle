@@ -81,6 +81,15 @@ module.exports = function(grunt) {
           dest: 'dest/'
         }],
       },
+      serve: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: 'app/',
+          src: ['**/*', '!**/assets/scss/**'],
+          dest: 'dest/'
+        }],
+      },      
     },
 
     watch: {
@@ -91,6 +100,13 @@ module.exports = function(grunt) {
           spawn: false,
         },
       },
+      serve: {
+        files: ['**/*'],
+        tasks: ['serve'],
+        options: {
+          spawn: false,
+        },
+      },      
     },
 
   });
@@ -115,6 +131,12 @@ module.exports = function(grunt) {
                                 'watch:build'
                               ]);
 
-  grunt.registerTask('serve', ['jshint']);  
+  grunt.registerTask('serve', [
+                                'jshint',
+                                'compass:build',
+                                'autoprefixer:build',
+                                'copy:serve',
+                                'watch:serve'                                
+                              ]);  
 
 };
