@@ -30,6 +30,23 @@ module.exports = function(grunt) {
       }
     },
 
+    autoprefixer: {
+      options: {
+        browsers: ['last 15 version']
+      },
+      build: {
+        files: [
+          {
+            expand: true,
+            cwd: 'app/assets',
+            src: ['css/**/*.css'],
+            dest: 'app/assets/',
+            ext: '.css',
+          }
+        ]
+      }
+    },    
+
     cssmin: {
       build: {
         files: [{
@@ -48,7 +65,7 @@ module.exports = function(grunt) {
           expand: true,
           dot: true,
           cwd: 'app/',
-          src: ['**', '!assets/js', '!assets/css'],
+          src: ['**/*', '!**/assets/js/**', '!**/assets/css/**'],
           dest: 'dest/'
         }],
       },
@@ -59,11 +76,19 @@ module.exports = function(grunt) {
   // module(s)
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-autoprefixer');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
   // task(s).
-  grunt.registerTask('build', [ 'jshint', 'uglify:build', 'cssmin:build', 'copy:build']);
+  grunt.registerTask('build', [
+                                'jshint',
+                                'uglify:build',
+                                'autoprefixer:build',
+                                'cssmin:build',
+                                'copy:build'
+                              ]);
+
   grunt.registerTask('serve', ['jshint']);  
 
 };
