@@ -1,6 +1,6 @@
 ;(function ($) {
   'use strict';
-  $.fn.puzzle = function(options, image) {
+  $.fn.puzzle = function(globalOptions, options, image) {
 
     var self = this;
     var img = new Image();
@@ -25,11 +25,13 @@
       tileCount       : 3,
       time            : 3, // minutes
       timeWrapper     : false,
-      timeLabel       : 'Countdown Time',
-      timeFormat        : 'minutes', // OR minutes
+      lostFlag        : false,
+      timeLabel       : ["<label>Countdown Time</label>", "x", "seconds"],
+      timeFormat      : 'minutes', // OR minutes
       solvedMsg       : "You solved it !",
+      solvedMaskMsg   : ["Solved in", "x", "seconds"],
       solvedCallback  : false,
-    }, options);
+    }, globalOptions, options);
 
     var plugin = {
       solved: false,
@@ -38,6 +40,7 @@
       countdownFlag: false,
       boardParts: '',
       tileSize: boardSize / settings.tileCount,
+      solvedMaskFlag: false,
       emptyLoc: {
         x: 0,
         y: 0,
@@ -45,7 +48,7 @@
       clickLoc: {
         x: 0,
         y: 0,
-      },      
+      },    
       context:  document.getElementById(self.attr('id')).getContext('2d'),
 
       imageLoader: function(src){
@@ -169,12 +172,16 @@
         } else {
           if ($('#puzzle-countdown-wrapper').length === 0) {
             self.parent()
-              .prepend('<div id="puzzle-countdown-wrapper"><label>' + settings.timeLabel + '</label> <time id="puzzle-countdown">' + plugin.setFormat(seconds) + '</time> seconds </div>');
+              .prepend('<div id="puzzle-countdown-wrapper">'+ plugin.getClockMask('<time dir="ltr" id="puzzle-countdown">' + plugin.setFormat(seconds) + '</time> ') + '</div>');
           }
           countdown.mainWrapper = $('#puzzle-countdown');
         }
 
-        function setNewSecounds(thisSeconds) {        
+        function setNewSecounds(thisSeconds) {
+          if (thisSeconds === 0 && !plugin.lostFlag) {
+            plugin.lostFlag = true;
+            plugin.lostMask();
+          }
           if (thisSeconds > 0 && !plugin.countdownFlag){
             seconds = thisSeconds-1;
             plugin.solvedTime = (settings.time * 60) - seconds;
@@ -188,29 +195,74 @@
 
       },
 
-      play: function(){
-        $(self).on('click', function playClickhandler(e) {
-          plugin.clickLoc.x = Math.floor((e.pageX - this.offsetLeft) / plugin.tileSize);
-          plugin.clickLoc.y = Math.floor((e.pageY - this.offsetTop) / plugin.tileSize);
-          if (plugin.distance(plugin.clickLoc.x, plugin.clickLoc.y, plugin.emptyLoc.x, plugin.emptyLoc.y) == 1) {
-            plugin.slideTile(plugin.emptyLoc, plugin.clickLoc);
-            plugin.drawTiles();
-          }
-          if (plugin.solved) {
-            if (settings.solvedCallback !== false) {
-              settings.solvedCallback();
-            } else {
-              setTimeout(function() {
-                alert(settings.solvedMsg);
-              }, 500);
-            }
+      getClockMask: function(time) {
+        $.map(settings.timeLabel, function(item, key){
+          if (item == 'x') {
+            settings.timeLabel[key] = time;
           }
         });
+        return settings.timeLabel.join(' ');        
+      },
+
+      getSolvedMsg: function() {
+        $.map(settings.solvedMaskMsg, function(item, key){
+          if (item == 'x') {
+            settings.solvedMaskMsg[key] = plugin.solvedTime;
+          }
+        });
+        return settings.solvedMaskMsg.join(' ');
+      },
+
+      solvedMask: function() {
+        if (!plugin.solvedMaskFlag) {
+          plugin.context.fillStyle = 'rgba(255,255,255, 0.5)';
+          plugin.context.fillRect(0, 0,boardSize , boardSize);
+          plugin.context.fillStyle = 'rgba(0,0,0, 1)';
+          plugin.context.font = "30px Arial";
+          plugin.context.fillText(plugin.getSolvedMsg() , boardSize/4, boardSize/2);
+          plugin.solvedMaskFlag = true;
+          $(self).off('click');
+        }
+      },
+
+      lostMask: function() {
+        if (plugin.lostFlag) {
+          plugin.context.fillStyle = 'rgba(255,255,255, 0.5)';
+          plugin.context.fillRect(0, 0,boardSize , boardSize);
+          plugin.context.fillStyle = 'rgba(0,0,0, 1)';
+          plugin.context.font = "30px Arial";
+          plugin.context.fillText('Time is over' , boardSize/4, boardSize/2);
+          plugin.solvedMaskFlag = true;
+          $(self).off('click');
+        }
+      },      
+
+      play: function() {
+        if (!plugin.solvedMaskFlag) {
+          $(self).on('click', function playClickhandler(e) {
+            plugin.clickLoc.x = Math.floor((e.pageX - this.offsetLeft) / plugin.tileSize);
+            plugin.clickLoc.y = Math.floor((e.pageY - this.offsetTop) / plugin.tileSize);
+            if (plugin.distance(plugin.clickLoc.x, plugin.clickLoc.y, plugin.emptyLoc.x, plugin.emptyLoc.y) == 1) {
+              plugin.slideTile(plugin.emptyLoc, plugin.clickLoc);
+              plugin.drawTiles();
+            }
+            if (plugin.solved) {
+              if (settings.solvedCallback !== false) {
+                settings.solvedCallback();
+              } else {
+                setTimeout(function() {
+                  alert(settings.solvedMsg);
+                }, 500);
+              }
+              plugin.solvedMask();
+            }
+          });
+        }
       },
 
       resetGame: function() {
-          clearInterval(plugin.clockInterval);
-          $(self).off('click');
+        clearInterval(plugin.clockInterval);
+        $(self).off('click');
       },
 
       thumbnails: function() {
@@ -223,7 +275,7 @@
           }
           var src = $(this).data('puzzleSrc');
           $('[data-puzzle="thumbnails"]').off('click', '.item', itemClickHandler);
-          self.puzzle(options, src);
+          self.puzzle(globalOptions, options, src);
         });
       }
 
@@ -240,7 +292,7 @@
       plugin.drawTiles();
       plugin.play();
       plugin.thumbnails();
-    }), output, plugin;
+    }), output;
 
   };
 })(jQuery);

@@ -42,9 +42,9 @@
       </div>
       <div class="row">
         <aside class="text-center" data-puzzle="thumbnails">
-          <img class="item" data-puzzle-src="assets/images/001.jpg" src="assets/images/001.jpg" data-puzzle-options="{'tileCount':3}" alt="001" width="140" height="140" class="img-thumbnail">
-          <img class="item" data-puzzle-src="assets/images/002.jpg" src="assets/images/002.jpg" data-puzzle-options="{'tileCount':2, 'time':1}" alt="002" width="140" height="140" class="img-thumbnail">
-          <img class="item" data-puzzle-src="assets/images/003.jpg" src="assets/images/003.jpg" alt="003" width="140" height="140" class="img-thumbnail">
+          <img class="item img-thumbnail" data-puzzle-src="assets/images/001.jpg" src="assets/images/001.jpg" data-puzzle-options="{'tileCount':3}" alt="001" width="140" height="140">
+          <img class="item img-thumbnail" data-puzzle-src="assets/images/002.jpg" src="assets/images/002.jpg" data-puzzle-options="{'tileCount':15, 'time':1}" alt="002" width="140" height="140">
+          <img class="item img-thumbnail" data-puzzle-src="assets/images/003.jpg" src="assets/images/003.jpg" alt="003" width="140" height="140">
         </aside>
       </div>
     </div>
