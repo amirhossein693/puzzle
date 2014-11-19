@@ -144,6 +144,11 @@
     };
 
     return plugin.imageLoader(img.src).then(function () {
+      $(self).parents().map(function(){
+        if (!$(this).is('body') && $(this).css('position') !== 'static') {
+          $(this).css('position', 'static');
+        }
+      });
       plugin.setBoard();
       plugin.drawTiles();
       plugin.play();

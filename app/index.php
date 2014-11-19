@@ -9,22 +9,39 @@
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+
+    <header class="navbar navbar-static-top" id="top" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="#" class="navbar-brand">Puzzle</a>
+        </div>
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="#">jQuery Puzzle</a>
+            </li>
+            <li>
+              <a href="#">Getting started</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
     <div class="container">
       <div class="row">
-        <div class="col-md-12">
-          <aside id="slider">
-            <form>
-              <label>Easy</label>
-              <input type="range" id="scale" value="4" min="3" max="5" step="1">
-              <label>Hard</label>
-            </form>
-          </aside>
-          <main id="main" class="main">
+        <main class="col-md-12 text-center">
             <canvas id="puzzle" width="480" height="480"></canvas>
-          </main>
-        </div>
+        </main>
       </div>
     </div>
+
   <!-- vendors -->
   <script src="assets/vendors/jquery/dist/jquery.min.js"></script>
   <script src="assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
