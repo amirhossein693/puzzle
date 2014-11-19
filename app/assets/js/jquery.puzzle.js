@@ -8,14 +8,21 @@
 
     var boardSize = document.getElementById(self.attr('id')).width;
 
-
     // default settings
     var settings = $.extend({
-      tileCount : 3
+      tileCount       : 3,
+      time            : 3, // minutes
+      timeWrapper     : false,
+      timeLabel       : 'Countdown Time',
+      timeFormat        : 'minutes', // OR minutes
+      solvedMsg       : "You solved it in seconds !",
+      solvedCallback  : false,
     }, options);
 
     var plugin = {
       solved: false,
+      solvedTime: 0,
+      countdownFlag: false,
       boardParts: '',
       tileSize: boardSize / settings.tileCount,
       emptyLoc: {
@@ -125,6 +132,45 @@
           }
         }
         plugin.solved = flag;
+        plugin.countdownFlag = flag;
+      },
+
+      setFormat: function(seconds) {
+        var clock = {};
+        if (settings.timeFormat === 'seconds') {
+          return seconds;
+        } else {
+          clock.minutes = Math.floor(seconds / 60);
+          clock.seconds = seconds - clock.minutes * 60;
+          return clock.minutes + ' : ' + clock.seconds;
+        }
+      },
+
+      countdown: function() {
+        var countdown = {};
+        var seconds = settings.time * 60;
+
+        // set mainWrapper
+        if (settings.timeWrapper !== false) {
+          countdown.mainWrapper = $(settings.timeWrapper);
+        } else {
+          self.parent()
+            .prepend('<div><label>' + settings.timeLabel + '</label> <time id="puzzle-countdown">' + plugin.setFormat(seconds) + '</time> seconds </div>');
+          countdown.mainWrapper = $('#puzzle-countdown');
+        }
+
+        function setNewSecounds(thisSeconds) {        
+          if (thisSeconds >= 0 && !plugin.countdownFlag){
+            seconds = thisSeconds-1;
+            plugin.solvedTime = (settings.time * 60) - seconds;
+            return plugin.setFormat(seconds);
+          }
+        }
+
+        setInterval(function(){
+          countdown.mainWrapper.html(setNewSecounds(seconds));
+        }, 1000);
+
       },
 
       play: function(){
@@ -136,10 +182,17 @@
             plugin.drawTiles();
           }
           if (plugin.solved) {
-            setTimeout(function() {alert("You solved it!");}, 500);
+            if (settings.solvedCallback !== false) {
+              settings.solvedCallback();
+            } else {
+              setTimeout(function() {
+                alert(settings.solvedMsg);
+                console.log(plugin.solvedTime);
+              }, 500);
+            }
           }
         });
-      }
+      },
 
     };
 
@@ -149,6 +202,7 @@
           $(this).css('position', 'static');
         }
       });
+      plugin.countdown();
       plugin.setBoard();
       plugin.drawTiles();
       plugin.play();
