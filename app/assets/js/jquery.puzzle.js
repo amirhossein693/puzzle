@@ -189,7 +189,7 @@
       },
 
       play: function(){
-        $(self).delegate( self, "click", function(e) {
+        $(self).on('click', function playClickhandler(e) {
           plugin.clickLoc.x = Math.floor((e.pageX - this.offsetLeft) / plugin.tileSize);
           plugin.clickLoc.y = Math.floor((e.pageY - this.offsetTop) / plugin.tileSize);
           if (plugin.distance(plugin.clickLoc.x, plugin.clickLoc.y, plugin.emptyLoc.x, plugin.emptyLoc.y) == 1) {
@@ -210,6 +210,7 @@
 
       resetGame: function() {
           clearInterval(plugin.clockInterval);
+          $(self).off('click');
       },
 
       thumbnails: function() {

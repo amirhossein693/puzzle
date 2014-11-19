@@ -3,12 +3,11 @@
 
 	$(document).ready(function(){
 		var options = {
-			tileCount: 2,
+			tileCount: 4,
 			time: 1,
 		};
-		var img = 'assets/images/002.jpg';
-		window.puzzle = $('#puzzle').puzzle(options, img);
-		console.log(puzzle);
+		var img = 'assets/images/001.jpg';
+		$('#puzzle').puzzle(options, img);
 	});
 
 })(jQuery);
