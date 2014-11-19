@@ -4,10 +4,11 @@
 	$(document).ready(function(){
 		var options = {
 			tileCount: 2,
-			time: 4,
+			time: 1,
 		};
 		var img = 'assets/images/002.jpg';
 		window.puzzle = $('#puzzle').puzzle(options, img);
+		console.log(puzzle);
 	});
 
 })(jQuery);

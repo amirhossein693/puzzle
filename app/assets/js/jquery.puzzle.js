@@ -175,7 +175,7 @@
         }
 
         function setNewSecounds(thisSeconds) {        
-          if (thisSeconds >= 0 && !plugin.countdownFlag){
+          if (thisSeconds > 0 && !plugin.countdownFlag){
             seconds = thisSeconds-1;
             plugin.solvedTime = (settings.time * 60) - seconds;
             return plugin.setFormat(seconds);
@@ -208,16 +208,19 @@
         });
       },
 
+      resetGame: function() {
+          clearInterval(plugin.clockInterval);
+      },
+
       thumbnails: function() {
         $('[data-puzzle="thumbnails"]').on('click', '.item', function itemClickHandler() {
-          clearInterval(plugin.clockInterval);
+          plugin.resetGame();
           var options = {};
           if(typeof($(this).data('puzzleOptions')) !== 'undefined') {
             options = $(this).data('puzzleOptions').replace(/\'/gi, "\"");
             options = jQuery.parseJSON(options);
           }
           var src = $(this).data('puzzleSrc');
-          console.log('1');
           $('[data-puzzle="thumbnails"]').off('click', '.item', itemClickHandler);
           self.puzzle(options, src);
         });
@@ -236,7 +239,7 @@
       plugin.drawTiles();
       plugin.play();
       plugin.thumbnails();
-    }), output;
+    }), output, plugin;
 
   };
 })(jQuery);
