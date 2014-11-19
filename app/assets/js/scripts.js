@@ -7,7 +7,7 @@
 			time: 4,
 		};
 		var img = 'assets/images/002.jpg';
-		$('#puzzle').puzzle(options, img);
+		window.puzzle = $('#puzzle').puzzle(options, img);
 	});
 
 })(jQuery);

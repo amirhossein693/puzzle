@@ -8,6 +8,18 @@
 
     var boardSize = document.getElementById(self.attr('id')).width;
 
+    // public
+    var output = {
+      getSolvedTime: function() {
+        if (plugin.solved) {
+          return plugin.solvedTime;
+        } else {
+          return 'Not Solved';
+        }
+      }
+    };
+
+
     // default settings
     var settings = $.extend({
       tileCount       : 3,
@@ -15,13 +27,14 @@
       timeWrapper     : false,
       timeLabel       : 'Countdown Time',
       timeFormat        : 'minutes', // OR minutes
-      solvedMsg       : "You solved it in seconds !",
+      solvedMsg       : "You solved it !",
       solvedCallback  : false,
     }, options);
 
     var plugin = {
       solved: false,
-      solvedTime: 0,
+      clockInterval: '',
+      solvedTime: 'Not Solved',
       countdownFlag: false,
       boardParts: '',
       tileSize: boardSize / settings.tileCount,
@@ -154,8 +167,10 @@
         if (settings.timeWrapper !== false) {
           countdown.mainWrapper = $(settings.timeWrapper);
         } else {
-          self.parent()
-            .prepend('<div><label>' + settings.timeLabel + '</label> <time id="puzzle-countdown">' + plugin.setFormat(seconds) + '</time> seconds </div>');
+          if ($('#puzzle-countdown-wrapper').length === 0) {
+            self.parent()
+              .prepend('<div id="puzzle-countdown-wrapper"><label>' + settings.timeLabel + '</label> <time id="puzzle-countdown">' + plugin.setFormat(seconds) + '</time> seconds </div>');
+          }
           countdown.mainWrapper = $('#puzzle-countdown');
         }
 
@@ -167,7 +182,7 @@
           }
         }
 
-        setInterval(function(){
+        plugin.clockInterval = setInterval(function(){
           countdown.mainWrapper.html(setNewSecounds(seconds));
         }, 1000);
 
@@ -187,12 +202,26 @@
             } else {
               setTimeout(function() {
                 alert(settings.solvedMsg);
-                console.log(plugin.solvedTime);
               }, 500);
             }
           }
         });
       },
+
+      thumbnails: function() {
+        $('[data-puzzle="thumbnails"]').on('click', '.item', function itemClickHandler() {
+          clearInterval(plugin.clockInterval);
+          var options = {};
+          if(typeof($(this).data('puzzleOptions')) !== 'undefined') {
+            options = $(this).data('puzzleOptions').replace(/\'/gi, "\"");
+            options = jQuery.parseJSON(options);
+          }
+          var src = $(this).data('puzzleSrc');
+          console.log('1');
+          $('[data-puzzle="thumbnails"]').off('click', '.item', itemClickHandler);
+          self.puzzle(options, src);
+        });
+      }
 
     };
 
@@ -206,7 +235,8 @@
       plugin.setBoard();
       plugin.drawTiles();
       plugin.play();
-    });
+      plugin.thumbnails();
+    }), output;
 
   };
 })(jQuery);
