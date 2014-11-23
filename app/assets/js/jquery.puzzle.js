@@ -291,7 +291,14 @@
           event.preventDefault();
           plugin.resetGame();
           var level = $(this).data('level');
-          var options = {tileCount: level};
+          var options;
+          if(typeof($(this).data('puzzleOptions')) !== 'undefined') {
+            options = $(this).data('puzzleOptions').replace(/\'/gi, "\"");
+            options = jQuery.parseJSON(options);
+            $.extend({tileCount: level}, options);
+          } else {
+            options = {tileCount: level};
+          }        
           var src = $('[data-puzzle="thumbnails"]').find('.active').attr('src');
           $('[data-puzzle="levels"]').off('click', '.levels', itemLevelHandler);
           self.puzzle(globalOptions, options, src);
