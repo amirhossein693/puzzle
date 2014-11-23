@@ -5,3 +5,5 @@ Reference:	http://www.sitepoint.com/image-manipulation-with-html5-canvas-a-slidi
 
 After clone project, please install grunt modules And run 'build' task.
 Enjoy it.
+
+Also you can use 'serve' task for Developing mode.
