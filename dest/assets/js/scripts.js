@@ -1,0 +1,1 @@
+!function(a){"use strict";a(document).ready(function(){var b={},c={tileCount:2,time:1},d="assets/images/001.jpg";a("#puzzle").puzzle(b,c,d)})}(jQuery);

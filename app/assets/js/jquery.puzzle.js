@@ -16,7 +16,7 @@
         } else {
           return 'Not Solved';
         }
-      }
+      }   
     };
 
 
@@ -27,10 +27,11 @@
       timeWrapper     : false,
       lostFlag        : false,
       timeLabel       : ["<label>Countdown Time</label>", "x", "seconds"],
-      timeFormat      : 'minutes', // OR minutes
+      timeFormat      : 'minutes', // secounds OR minutes
       solvedMsg       : "You solved it !",
       solvedMaskMsg   : ["Solved in", "x", "seconds"],
       solvedCallback  : false,
+      lostMsg         : 'Time is over',
     }, globalOptions, options);
 
     var plugin = {
@@ -231,7 +232,7 @@
           plugin.context.fillRect(0, 0,boardSize , boardSize);
           plugin.context.fillStyle = 'rgba(0,0,0, 1)';
           plugin.context.font = "30px Arial";
-          plugin.context.fillText('Time is over' , boardSize/4, boardSize/2);
+          plugin.context.fillText(settings.lostMsg , boardSize/4, boardSize/2);
           plugin.solvedMaskFlag = true;
           $(self).off('click');
         }
@@ -247,6 +248,7 @@
               plugin.drawTiles();
             }
             if (plugin.solved) {
+            // TODO: alerts more than once time, after adding setLevels method
               if (settings.solvedCallback !== false) {
                 settings.solvedCallback();
               } else {
@@ -263,10 +265,13 @@
       resetGame: function() {
         clearInterval(plugin.clockInterval);
         $(self).off('click');
+        $('[data-puzzle="thumbnails"]').off('click');
+        $('[data-puzzle="levels"]').off('click');
       },
 
       thumbnails: function() {
-        $('[data-puzzle="thumbnails"]').on('click', '.item', function itemClickHandler() {
+        $('[data-puzzle="thumbnails"]').on('click', '.item', function itemClickHandler(event) {
+          event.preventDefault();
           plugin.resetGame();
           var options = {};
           if(typeof($(this).data('puzzleOptions')) !== 'undefined') {
@@ -274,7 +279,21 @@
             options = jQuery.parseJSON(options);
           }
           var src = $(this).data('puzzleSrc');
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
           $('[data-puzzle="thumbnails"]').off('click', '.item', itemClickHandler);
+          self.puzzle(globalOptions, options, src);
+        });
+      },
+
+      setLevels: function() {
+        $('[data-puzzle="levels"]').on('click', '.levels', function itemLevelHandler(event) {
+          event.preventDefault();
+          plugin.resetGame();
+          var level = $(this).data('level');
+          var options = {tileCount: level};
+          var src = $('[data-puzzle="thumbnails"]').find('.active').attr('src');
+          $('[data-puzzle="levels"]').off('click', '.levels', itemLevelHandler);
           self.puzzle(globalOptions, options, src);
         });
       }
@@ -291,6 +310,7 @@
       plugin.setBoard();
       plugin.drawTiles();
       plugin.play();
+      plugin.setLevels();
       plugin.thumbnails();
     }), output;
 
