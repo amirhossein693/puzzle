@@ -27,12 +27,15 @@ module.exports = function(grunt) {
           cwd: 'app/assets',
           src: ['js/**/*.js'],
           dest: 'dest/assets/',
-          ext: '.js',
-        }],  
+          ext: '.js'
+        }]
       }
     },
 
     compass: {
+      // This task requires you to have Ruby, Sass, and Compass >=1.0.1 installed.
+      // Run "gem update --system && gem install compass --precom" (without quotes) in the command line
+      // https://github.com/gruntjs/grunt-contrib-compass#compass-task
       build: {
         options: {
           sassDir: 'app/assets/scss/',
@@ -55,7 +58,7 @@ module.exports = function(grunt) {
             cwd: 'app/assets',
             src: ['css/**/*.css'],
             dest: 'app/assets/',
-            ext: '.css',
+            ext: '.css'
           }
         ]
       }
@@ -68,8 +71,8 @@ module.exports = function(grunt) {
           cwd: 'app/assets',
           src: ['css/**/*.css'],
           dest: 'dest/assets/',
-          ext: '.css',
-        }],  
+          ext: '.css'
+        }]
       }
     },
 
@@ -81,7 +84,7 @@ module.exports = function(grunt) {
           cwd: 'app/',
           src: ['**/*', '!**/assets/js/**', '!**/assets/css/**', '!**/assets/scss/**'],
           dest: 'dest/'
-        }],
+        }]
       },
       serve: {
         files: [{
@@ -90,27 +93,23 @@ module.exports = function(grunt) {
           cwd: 'app/',
           src: ['**/*', '!**/assets/scss/**'],
           dest: 'dest/'
-        }],
-      },      
+        }]
+      }
     },
 
     watch: {
       build: {
-        files: ['**/*'],
-        tasks: ['build'],
-        options: {
-          spawn: false,
-        },
+        files: ['app/assets/js/*.js','app/assets/scss/*.scss'],
+        tasks: ['build']
       },
       serve: {
         files: ['**/*'],
         tasks: ['serve'],
         options: {
-          spawn: false,
-        },
-      },      
-    },
-
+          spawn: false
+        }
+      }
+    }
   });
 
   // module(s)
