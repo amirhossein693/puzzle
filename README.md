@@ -1,14 +1,9 @@
-Project:		Image Manipulation with HTML5 Canvas: A Sliding Puzzle
-
-URL:      	http://amirhossein693.github.io/puzzle
-
-Author:			Amirhossein Ahmadi
-
-Contact:		amirhossein693@gmail.com
-
-Reference:	http://www.sitepoint.com/image-manipulation-with-html5-canvas-a-sliding-puzzle-2
-
-
+Project  | Image Manipulation with HTML5 Canvas: A Sliding Puzzle
+------------- | -------------
+URL:  | http://amirhossein693.github.io/puzzle
+Author:  | Amirhossein Ahmadi
+Contact: | amirhossein693@gmail.com
+Reference:	| http://www.sitepoint.com/image-manipulation-with-html5-canvas-a-sliding-puzzle-2
 
 ## Getting Started
 This plugin requires Grunt, Ruby, Sass, and Compass >=1.0.1 installed
