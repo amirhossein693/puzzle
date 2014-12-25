@@ -6,7 +6,7 @@ Contact: | amirhossein693@gmail.com
 Reference:	| http://www.sitepoint.com/image-manipulation-with-html5-canvas-a-sliding-puzzle-2
 
 ## Getting Started
-This plugin requires Grunt, Ruby, Sass, and Compass >=1.0.1 installed
+This package requires Grunt, Ruby, Sass, and Compass >=1.0.1 installed
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may setup the package with this command:
 
