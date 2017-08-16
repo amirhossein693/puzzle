@@ -23,4 +23,4 @@ gem update --system && gem install compass --pre
 Clone the project, Install grunt modules and run the 'build' task.
 Enjoy it.
 
-Also you can use 'serve' task for Developing mode.
+Also you can use 'serve' task for Developing mode
